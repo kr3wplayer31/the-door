@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE DOOR — Opens Once a Day | A.I. NOW</title>
+<meta name="description" content="There is one door on this website. It opens once a day, for 10 minutes, at a secret time. Behind it: one deal, gone when the door closes.">
+<style>
+  :root{
+    --black:#0A0618; --white:#F5F2FF; --pink:#FF2E88; --violet:#8B3DFF; --cyan:#00E5FF; --lime:#B6FF2E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--black);color:var(--white);font-family:'Segoe UI',Arial,Helvetica,sans-serif;text-align:center;min-height:100vh;overflow-x:hidden}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 64px}
+  .brand{font-weight:900;font-size:28px;letter-spacing:1px}
+  .brand .now{background:linear-gradient(92deg,#FF2E88 0%,#8B3DFF 48%,#00E5FF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pill{display:inline-block;background:var(--pink);color:#fff;font-weight:800;font-size:12px;letter-spacing:2px;padding:5px 14px;border-radius:999px;margin-top:8px}
+  h1{font-size:clamp(44px,10vw,96px);font-weight:900;line-height:.95;margin:28px 0 6px;letter-spacing:1px}
+  h1 .grad{background:linear-gradient(92deg,#FF2E88,#8B3DFF,#00E5FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:clamp(16px,3.4vw,22px);color:#CFC8FF;max-width:640px;margin:10px auto 8px}
+  .sub b{color:#fff}
+  /* THE DOOR */
+  .doorstage{margin:34px auto 8px;width:min(320px,80vw);height:440px;position:relative;perspective:900px}
+  .frame{position:absolute;inset:0;border:10px solid #241b45;border-bottom:none;border-radius:14px 14px 0 0;background:radial-gradient(ellipse at 50% 40%,#3a2a75 0%,#150d33 65%);overflow:hidden}
+  .behind{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;opacity:0;transition:opacity .6s}
+  .behind .dealname{font-size:24px;font-weight:900;line-height:1.15}
+  .behind .dealprice{font-size:40px;font-weight:900;color:var(--lime);margin:6px 0}
+  .behind .dealwas{color:#9d94d6;text-decoration:line-through;font-size:16px}
+  .door{position:absolute;inset:0;background:linear-gradient(160deg,#2c1e5e,#1a1140 60%,#120b2e);border:4px solid #453a7d;border-radius:8px 8px 0 0;transform-origin:left center;transition:transform 1.4s cubic-bezier(.6,0,.2,1);display:flex;align-items:center;justify-content:flex-end;padding-right:22px;z-index:3}
+  .door::before{content:"";position:absolute;inset:26px;border:3px solid #453a7d;border-radius:6px}
+  .knob{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ffe98a,#d4a017);box-shadow:0 0 12px #d4a01788;z-index:2}
+  .open .door{transform:rotateY(-72deg)}
+  .open .behind{opacity:1}
+  .glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#FF2E8844,transparent 65%);opacity:0;transition:opacity 1s;z-index:1}
+  .open .glow{opacity:1}
+  .status{font-size:clamp(20px,4.5vw,30px);font-weight:900;margin-top:18px;letter-spacing:.5px}
+  .status .pink{color:var(--pink)} .status .lime{color:var(--lime)} .status .cyan{color:var(--cyan)}
+  .timer{font-size:clamp(30px,7vw,52px);font-weight:900;font-variant-numeric:tabular-nums;margin-top:4px}
+  .btn{display:inline-block;margin-top:18px;background:var(--pink);color:#fff;font-weight:900;font-size:18px;letter-spacing:.5px;padding:15px 34px;border-radius:999px;text-decoration:none;box-shadow:0 6px 30px #FF2E8866;transition:transform .15s}
+  .btn:hover{transform:scale(1.04)}
+  .btn.cyan{background:var(--cyan);color:#06121a;box-shadow:0 6px 30px #00E5FF55}
+  .btn.ghost{background:transparent;border:2px solid var(--violet);color:var(--white);box-shadow:none}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:44px;text-align:left}
+  .card{background:#150e33;border:2px solid #2b2160;border-radius:16px;padding:20px}
+  .card h3{font-size:18px;margin-bottom:8px}
+  .card p{color:#CFC8FF;font-size:15px;line-height:1.5}
+  .card .big{font-size:26px;font-weight:900;color:#fff}
+  .sponsor{margin-top:44px;background:linear-gradient(92deg,#FF2E8822,#8B3DFF22,#00E5FF22);border:2px dashed var(--violet);border-radius:16px;padding:24px}
+  .sponsor h3{font-size:22px;margin-bottom:6px}
+  .sponsor p{color:#E7E2FF;font-size:16px;line-height:1.55}
+  footer{margin-top:48px;color:#8f86c9;font-size:13px;line-height:1.7}
+  footer a{color:var(--cyan);text-decoration:none}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">A.I. <span class="now">NOW</span></div>
+  <div><span class="pill">DOOR.ARTIFICIAL-INTELLIGENCENOW.COM</span></div>
+
+  <h1>THE <span class="grad">DOOR</span></h1>
+  <p class="sub">There is <b>one door</b> on this website. It opens <b>once a day, for 10 minutes</b>, at a secret time. Behind it is <b>one deal</b> — and when the door closes, the deal is gone until tomorrow.</p>
+
+  <div class="doorstage" id="stage">
+    <div class="frame">
+      <div class="glow"></div>
+      <div class="behind" id="behind">
+        <div style="font-size:13px;letter-spacing:3px;color:var(--cyan);font-weight:800">BEHIND THE DOOR TODAY</div>
+        <div class="dealname" id="dealName">—</div>
+        <div class="dealprice" id="dealPrice">—</div>
+        <div class="dealwas" id="dealWas"></div>
+        <a class="btn" id="dealBtn" href="https://shop.artificial-intelligencenow.com" target="_blank" rel="noopener">GET IT BEFORE IT CLOSES</a>
+      </div>
+      <div class="door"><div class="knob"></div></div>
+    </div>
+  </div>
+
+  <div class="status" id="statusLine">THE DOOR IS <span class="pink">CLOSED</span></div>
+  <div class="timer" id="timer">--:--:--</div>
+  <div id="ctaRow">
+    <a class="btn cyan" href="https://shop.artificial-intelligencenow.com/pages/join-the-list" target="_blank" rel="noopener">GET THE WHISPER — 1 HINT EVERY MORNING</a>
+    <p style="color:#9d94d6;font-size:14px;margin-top:10px">Join the List and every morning you get one hint about when the door opens that day. No hint, no chance — the window is only 10 minutes.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3>🕰️ YESTERDAY BEHIND THE DOOR</h3>
+      <p class="big" id="yName">—</p>
+      <p id="yPrice">—</p>
+      <p>Missed it? It comes back in the rotation — but never at the same time, and never two days in a row.</p>
+    </div>
+    <div class="card">
+      <h3>🚪 HOW IT WORKS</h3>
+      <p>1. The door opens once a day at a secret time between 9 AM and 9 PM Detroit time.<br>
+      2. It stays open exactly 10 minutes.<br>
+      3. One product, one door-only price. When it closes, it's over.<br>
+      4. List members get a morning hint. Everyone else guesses.</p>
+    </div>
+    <div class="card">
+      <h3>📅 TOMORROW</h3>
+      <p class="big" id="tName">A new deal</p>
+      <p>Different product. Different time. Same door. Set your alarm — or get the whisper and don't guess.</p>
+    </div>
+  </div>
+
+  <div class="sponsor">
+    <h3>YOUR BUSINESS BEHIND THE DOOR</h3>
+    <p>Every day, people come back to this page and stare at this door. Your product could be the one behind it tomorrow — the only deal on the site, in front of every visitor, for the full day.<br>
+    <b>Launch rate: $25 for a full day behind the door.</b> One business per day. First come, first served.<br>
+    Email <b>support@artificial-intelligencenow.com</b> with subject <b>DOOR</b> to claim a day.</p>
+  </div>
+
+  <footer>
+    THE DOOR is an A.I. NOW experience · <a href="https://artificial-intelligencenow.com">artificial-intelligencenow.com</a> · <a href="https://shop.artificial-intelligencenow.com">shop the store</a><br>
+    Door prices are real store prices, shown live from the day's pick. No fake countdowns — when the timer hits zero, the deal really is gone.
+  </footer>
+</div>
+
+<script>
+// ---- THE DOOR mechanic: one secret 10-minute window per day (Detroit time) ----
+// Deterministic per date: every visitor worldwide sees the SAME window.
+const DEALS = [
+  {name:"DIY Lash Cluster Kit", price:"$18.99", was:"", url:"https://shop.artificial-intelligencenow.com"},
+  {name:"All-Over Glow Balm", price:"$22.99", was:"", url:"https://shop.artificial-intelligencenow.com"},
+  {name:"Gold Hoop Earrings", price:"$17.99", was:"", url:"https://shop.artificial-intelligencenow.com"},
+  {name:"“6 7” Meme Ugly Christmas Sweater", price:"$27.99", was:"", url:"https://shop.artificial-intelligencenow.com"},
+  {name:"Invisible Pimple Patches", price:"$11.99", was:"", url:"https://shop.artificial-intelligencenow.com"},
+  {name:"Satin Heatless Curling Rod Set", price:"$14.99", was:"", url:"https://shop.artificial-intelligencenow.com"},
+  {name:"Korean Exfoliating Bath Mitts — 2 Pack", price:"$12.99", was:"", url:"https://shop.artificial-intelligencenow.com"}
+];
+function detroitNow(){
+  return new Date(new Date().toLocaleString('en-US',{timeZone:'America/Detroit'}));
+}
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)}
+function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function dayPlan(d){
+  const seed = hashStr('THEDOOR-'+dateKey(d));
+  // window start: 09:00 to 20:50 Detroit (so it always closes by 21:00)
+  const startMin = 540 + (seed % 710);
+  const start = new Date(d); start.setHours(0,startMin,0,0);
+  const end = new Date(start.getTime() + 10*60000);
+  const deal = DEALS[seed % DEALS.length];
+  return {start,end,deal};
+}
+function fmt(ms){
+  if(ms<0) ms=0;
+  const s=Math.floor(ms/1000);
+  const h=String(Math.floor(s/3600)).padStart(2,'0'), m=String(Math.floor(s%3600/60)).padStart(2,'0'), ss=String(s%60).padStart(2,'0');
+  return h+':'+m+':'+ss;
+}
+const stage=document.getElementById('stage'), statusLine=document.getElementById('statusLine'),
+      timer=document.getElementById('timer'), ctaRow=document.getElementById('ctaRow');
+const today = detroitNow();
+const plan = dayPlan(today);
+const yPlan = dayPlan(new Date(today.getTime()-86400000));
+const tPlan = dayPlan(new Date(today.getTime()+86400000));
+document.getElementById('dealName').textContent = plan.deal.name;
+document.getElementById('dealPrice').textContent = plan.deal.price;
+document.getElementById('dealBtn').href = plan.deal.url;
+document.getElementById('yName').textContent = yPlan.deal.name;
+document.getElementById('yPrice').textContent = 'Was behind the door at ' + yPlan.deal.price;
+document.getElementById('tName').textContent = 'Tomorrow: ' + tPlan.deal.name + '?';
+function tick(){
+  const now = detroitNow();
+  if(now >= plan.start && now < plan.end){
+    stage.classList.add('open');
+    statusLine.innerHTML = 'THE DOOR IS <span class="lime">OPEN</span> — GO!';
+    timer.textContent = fmt(plan.end - now);
+    ctaRow.classList.add('hidden');
+  } else if(now < plan.start){
+    stage.classList.remove('open');
+    statusLine.innerHTML = 'THE DOOR IS <span class="pink">CLOSED</span> — IT OPENS IN';
+    timer.textContent = fmt(plan.start - now);
+    ctaRow.classList.remove('hidden');
+  } else {
+    stage.classList.remove('open');
+    statusLine.innerHTML = 'TODAY\'S DOOR HAS <span class="cyan">CLOSED</span> — NEXT OPENS IN';
+    const next = dayPlan(new Date(now.getTime()+86400000));
+    timer.textContent = fmt(next.start - now);
+    ctaRow.classList.remove('hidden');
+  }
+}
+tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
